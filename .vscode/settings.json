@@ -1,0 +1,15 @@
+{
+  "python.defaultInterpreterPath": "D:\\1.hhh\\Work Application\\Anaconda\\envs\\hello-agent\\python.exe",
+  "python.terminal.activateEnvironment": true,
+  "python.condaPath": "D:\\1.hhh\\Work Application\\Anaconda\\Scripts\\conda.exe",
+  "terminal.integrated.defaultProfile.windows": "Command Prompt (hello-agent)",
+  "terminal.integrated.profiles.windows": {
+    "Command Prompt (hello-agent)": {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "args": [
+        "/k",
+        "D:\\1.hhh\\WORKAP~1\\Anaconda\\Scripts\\activate.bat hello-agent"
+      ]
+    }
+  }
+}
