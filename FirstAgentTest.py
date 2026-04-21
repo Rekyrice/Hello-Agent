@@ -4,8 +4,9 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 from dotenv import load_dotenv
-from openai import OpenAI
 from tavily import TavilyClient
+
+from llm_client import OpenAICompatibleClient, get_env_or_raise
 
 AGENT_SYSTEM_PROMPT = """
 你是一个智能旅行助手。你的任务是分析用户的请求，并使用可用工具一步步地解决问题。
@@ -42,14 +43,6 @@ Action的格式必须是以下之一：
 
 WEATHER_TIMEOUT_SECONDS = 12
 _tavily_client: Optional[TavilyClient] = None
-
-
-def get_env_or_raise(name: str) -> str:
-    """读取必填环境变量，缺失时抛出异常。"""
-    value = os.getenv(name, "").strip()
-    if not value:
-        raise ValueError(f"缺少必填环境变量：{name}")
-    return value
 
 
 def get_tavily_client() -> TavilyClient:
@@ -336,33 +329,6 @@ available_tools = {
     "get_alternative_attractions": get_alternative_attractions,
     "adjust_strategy": adjust_strategy,
 }
-
-
-class OpenAICompatibleClient:
-    """用于调用 OpenAI 兼容接口的大模型客户端。"""
-
-    def __init__(self, model: str, api_key: str, base_url: str):
-        self.model = model
-        self.client = OpenAI(api_key=api_key, base_url=base_url)
-
-    def generate(self, prompt: str, system_prompt: str) -> str:
-        """调用 LLM 生成回应。"""
-        print("正在调用大语言模型...")
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": prompt},
-                ],
-                stream=False,
-            )
-            answer = response.choices[0].message.content or ""
-            print("大语言模型响应成功。")
-            return answer
-        except Exception as e:
-            print(f"调用 LLM API 时发生错误: {e}")
-            return "错误：调用语言模型服务时出错。"
 
 
 def truncate_single_thought_action(llm_output: str) -> str:
