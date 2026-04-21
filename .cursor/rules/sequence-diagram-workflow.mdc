@@ -1,0 +1,41 @@
+---
+description: 规范“从代码到时序图”的生成流程，确保调用链、分支和异常路径可复用更新。
+globs:
+  - "**/*.py"
+  - "**/*.md"
+alwaysApply: false
+---
+
+# Sequence Diagram Workflow（时序图流程）
+
+目标：将关键调用路径稳定沉淀为 Mermaid 时序图，并可随着代码更新快速刷新。
+
+## 1) 输入
+- 目标脚本或模块（如 `FirstAgentTest.py`）。
+- 关注流程（主流程、工具调用、异常分支、终止条件）。
+
+## 2) 输出
+- 一份说明文档（场景、参与者、分支说明）。
+- 一段 Mermaid `sequenceDiagram` 代码。
+
+## 3) 必含参与者（按需）
+- User / MainLoop / LLMClient / ToolRouter / WeatherAPI / TavilyAPI / Logger
+
+## 4) 关键流程最小集合
+- 初始化与配置加载
+- Prompt 构建与 LLM 调用
+- Action 解析（tool / finish / error）
+- 工具执行与 Observation 回写
+- 循环终止（Finish 或 max_steps）
+
+## 5) 分支规范
+- 用 `alt/else` 表达成功与失败路径。
+- 异常分支必须体现（配置缺失、解析失败、网络异常）。
+
+## 6) 产物位置
+- 推荐：`docs/<模块名>_sequence/`
+- 文件名建议：`<模块名>_调用时序图.md`
+
+## 7) 维护策略
+- 代码核心流程变更后，同步更新时序图文档。
+- 若流程差异较大，保留“旧版图 + 新版图”便于回溯。

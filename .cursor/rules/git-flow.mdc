@@ -1,0 +1,44 @@
+---
+description: 标准化本仓库的 Git 提交流程，确保每次改动可追溯、可验证、可复用。
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+# Git Flow（最小可复用版）
+
+目标：在不破坏现有代码的前提下，稳定完成“检查 -> 实现 -> 验证 -> 提交 -> 推送”。
+
+## 1) 开始前检查
+- 先执行：`git status --short`
+- 再执行：`git diff --staged` 与 `git diff`
+- 查看最近提交风格：`git log -6 --oneline`
+
+## 2) 修改约束
+- 不要回滚非本次任务的用户改动。
+- 不要提交敏感文件（如 `.env`、密钥、凭据）。
+- 尽量小步改动，保持单一目的。
+
+## 3) 提交前验证（Python 项目）
+- 至少执行：`python -m py_compile "FirstAgentTest.py"`
+- 若有可用 lint，再执行对应 lint 检查。
+- 只有验证通过才允许提交。
+
+## 4) 提交规范
+- 提交信息使用中文，建议结构：
+  - 第一行：`feat|fix|docs: 一句话标题`
+  - 第二段：说明“为什么改”
+- 示例：
+  - `feat: 增强旅行助手交互记忆与拒绝反馈策略`
+
+## 5) 提交与推送
+- 先 `git add` 仅包含本次相关文件。
+- 再 `git commit`。
+- 最后 `git push origin main`（或当前分支）。
+
+## 6) 输出结果模板
+- 提交哈希：`<hash>`
+- 提交信息：`<message>`
+- 推送结果：`<local> -> <remote>`
+- 当前状态：`working tree clean`
+
